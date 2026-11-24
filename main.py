@@ -1,58 +1,64 @@
 #!/usr/bin/env python3
-"""Sum up 24 November 2026's world news in one image.
+"""Entry program for the make.fun bounty "news-image-20261124".
 
-Entry program for the make.fun bounty "news-image-20261124".
+The deliverable is the front page committed next to this file as
+``entry.png``: one 1024x1024 image summing up Tuesday 24 November 2026
+— 31 stories that happened, or were first reported, that Tuesday, in
+9 regions (3 heroes, 10 tiles, 18 wire briefs), each one date-checked.
 
-The finished front page lives beside this file as ``entry.png``: a
-1024x1024 PNG that sums up Tuesday 24 November 2026 in one image —
-31 verified stories across 9 regions (3 heroes, 10 tiles, 18 wire
-briefs), every item date-checked against the day.
-
-Behaviour: copy ``entry.png`` from this file's directory into the
-output directory, byte for byte, so the bytes the judge sees are
-exactly the bytes committed to the repository. The output directory
-is ``$MAKEFUN_OUTPUT_DIR`` when set, otherwise ``/output`` (the
-grader's container). No network, no clocks, no randomness: running
-the program any number of times always yields the identical file.
+Running this program copies that PNG, unchanged, into the output
+directory: ``$MAKEFUN_OUTPUT_DIR`` when the variable is set, otherwise
+``/output``. Nothing is fetched, generated or randomised, so repeated
+runs always produce the same bytes the repository carries.
 
 Python 3.13, standard library only.
 """
 
+import hashlib
 import os
 import shutil
 import sys
 from pathlib import Path
 
-ENTRY_NAME = "entry.png"
-DEFAULT_OUTPUT_DIR = "/output"
-OUTPUT_ENV_VAR = "MAKEFUN_OUTPUT_DIR"
+PNG_NAME = "entry.png"
+FALLBACK_OUTPUT = "/output"
+ENV_VAR = "MAKEFUN_OUTPUT_DIR"
 
 
-def source_image() -> Path:
-    """The committed front page, resolved next to this program file."""
-    return Path(__file__).resolve().parent / ENTRY_NAME
+def page_path() -> Path:
+    """The committed front page, resolved beside this very file."""
+    return Path(__file__).resolve().parent / PNG_NAME
 
 
-def output_dir() -> Path:
-    """Where the grader wants the image: env override, else /output."""
-    return Path(os.environ.get(OUTPUT_ENV_VAR, DEFAULT_OUTPUT_DIR))
+def target_dir() -> Path:
+    """Output directory: the env override wins, else the fallback."""
+    return Path(os.environ.get(ENV_VAR, FALLBACK_OUTPUT))
+
+
+def digest(path: Path) -> str:
+    """Short SHA-256 fingerprint, used only for the run report."""
+    return hashlib.sha256(path.read_bytes()).hexdigest()[:16]
 
 
 def main() -> int:
-    src = source_image()
+    src = page_path()
     if not src.is_file():
-        print(f"error: {ENTRY_NAME} not found beside main.py", file=sys.stderr)
+        print(f"error: {PNG_NAME} is missing beside main.py", file=sys.stderr)
         return 1
 
-    dest_dir = output_dir()
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    dest = dest_dir / ENTRY_NAME
-
-    # Byte-for-byte copy: the committed PNG is the entry, unchanged.
+    out_dir = target_dir()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    dest = out_dir / PNG_NAME
+    if dest.is_file() and digest(dest) == digest(src):
+        print(f"already there: {dest} ({dest.stat().st_size} bytes, sha256 {digest(dest)}…)")
+        return 0
     shutil.copyfile(src, dest)
 
-    size = dest.stat().st_size
-    print(f"wrote {dest} ({size} bytes)")
+    if digest(src) != digest(dest):
+        print("error: copied file does not match the committed page", file=sys.stderr)
+        return 1
+
+    print(f"wrote {dest} ({dest.stat().st_size} bytes, sha256 {digest(dest)}…)")
     return 0
 
 
