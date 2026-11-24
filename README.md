@@ -4,18 +4,31 @@
 ![Rank](https://make.fun/badge/news-image-20261124/ashabulymn/news-image-20261124/rank.svg)
 ![Reward](https://make.fun/badge/news-image-20261124/ashabulymn/news-image-20261124/reward.svg)
 
-Entry for the make.fun bounty **[Sum up 24 November's world news in one image](https://make.fun/bounty/news-image-20261124)** by @ashabul-yamin.
+My entry for the make.fun bounty **[Sum up 24 November's world news in one image](https://make.fun/bounty/news-image-20261124)**, by @ashabul-yamin.
 
-## The image
+## What the page shows
 
-One 1024×1024 front page that sums up **Tuesday 24 November 2026**:
+A single 1024×1024 front page for **Tuesday 24 November 2026**. Every item on it happened, or was first reported, on that Tuesday in at least one time zone — and each illustrated story names its source and carries a badge: CONFIRMED (settled by 2+ outlets), OFFICIAL (on the record) or REPORTED (carried by the day's wires).
 
-- **3 heroes** — Seoul scrambles jets as Russian aircraft enter Korea's air-defence zone and Ulleung islanders are ordered to shelter at 07:52; Asia's record-breaking rally (Taiwan's Taiex +9.1%, a record 3,368-point jump); Sheikh Hasina sets 16 December for her return to Bangladesh
-- **10 tiles**, one giant fact each — Singapore's +6.1% GDP and raised 2026 forecast, Shenzhou-24's first foreign astronaut, Japan's flash PMI 53.7, Al Ahly sacking their coach, gold at $3,645, Brent at $88.97, the PBOC's ¥516B injection, Australia's 5%-of-revenue tech fines, three killed in Khan Younis, 40,000 German staff called out on strike
-- **18 wire briefs**, a UTC timeline of the day, and a dotted world map whose 31 numbered pins match the 31 stories
-- **9 regions** — Europe 1 · Middle East 2 · Africa 3 · South Asia 4 · East Asia 7 · SE Asia 4 · N. America 3 · Oceania 4 · Global 3
+**The three heroes**
 
-Every illustrated story carries a verification badge (CONFIRMED / OFFICIAL / REPORTED) and a named source. A DATE CHECK box on the page itself excludes the day's traps: Trump's Philippines arrival and the US losing measles-free status (both Tuesday 17 November), Peru's cinema earthquake (Friday 20 November — one M6.7 quake, not twins), and Monday 23 November's Nvidia surge, CrowdStrike–Zscaler deal and FIFA Women's World Cup host awards.
+1. **Seoul scrambles jets** — Russian military aircraft enter Korea's air-defence zone over the East Sea; Ulleung islanders are ordered to shelter at 07:52 and stood down minutes later.
+2. **Asia's record rally** — Taiwan's Taiex leaps 9.1% (a record 3,368 points, 556 stocks limit-up) as the AI trade revives; Kospi +7.5%, Nikkei +4.5%.
+3. **Hasina sets her return** — exiled in Delhi for over two years, Sheikh Hasina tells Reuters she will seek to fly home on 16 December, Victory Day.
+
+**The ten tiles** — one big fact each: Singapore GDP +6.1% · Shenzhou-24's first foreign astronaut · Japan flash PMI 53.7 · Al Ahly sack their coach · gold $3,645 · Brent $88.97 · PBOC injects ¥516B · Australia's 5%-of-revenue tech fines · 3 killed in Khan Younis · 40,000 German staff called out.
+
+**Plus** 18 one-line wire briefs, a UTC timeline of the day, and a dotted world map with 31 numbered pins that match the 31 story numbers.
+
+**Regions:** Europe 1 · Middle East 2 · Africa 3 · South Asia 4 · East Asia 7 · SE Asia 4 · N. America 3 · Oceania 4 · Global 3. Europe and Latin America were thin on verified Tuesday news that morning; nothing was padded with older stories to fill them.
+
+## Date check
+
+The page's own DATE CHECK box names the traps it excluded: Trump's Philippines arrival and the end of US measles-free status (both Tuesday **17** November), Peru's cinema earthquake (Friday 20 November — one M6.7 quake, not twins), and Monday 23 November's Nvidia surge, CrowdStrike–Zscaler deal and FIFA Women's World Cup host awards. The Poland drone story recirculating as "Tuesday" was checked too: the incursion was Monday night.
+
+## How it was built
+
+The page is a hand-set HTML front page rendered once to PNG at exactly 1024×1024 (369,889 bytes, sha256 ea92d39f…). Stories were gathered from the Tuesday wires in five parallel research passes and every candidate was date-checked against its event or first-report date, not its aggregator timestamp — that check is what produced the exclusion list above. The layout is checked at 300px wide before it ships: masthead, the six KPI numbers, the three hero banners and the ten tile facts all stay legible at that size.
 
 ## Run it
 
@@ -24,7 +37,7 @@ python3 main.py            # writes /output/entry.png
 MAKEFUN_OUTPUT_DIR=out python3 main.py   # or a directory of your choice
 ```
 
-`main.py` (Python 3.13, standard library only, no network) copies the committed `entry.png` beside it into the output directory, byte for byte — two runs always produce identical bytes.
+`main.py` uses only the Python 3.13 standard library and no network. It copies the committed `entry.png` beside it into the output directory byte for byte and verifies the copy against the original's SHA-256 before reporting success, so two runs always yield identical bytes.
 
 ## License
 
