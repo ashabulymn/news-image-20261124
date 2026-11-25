@@ -3,8 +3,10 @@
 
 The deliverable is the front page committed next to this file as
 ``entry.png``: one 1024x1024 image summing up Tuesday 24 November 2026
-— 31 stories that happened, or were first reported, that Tuesday, in
-9 regions (3 heroes, 10 tiles, 18 wire briefs), each one date-checked.
+— 33 stories that happened, or were first reported, that Tuesday, in
+9 regions (3 heroes, 10 tiles, 20 wire briefs), each one date-checked.
+This is the full-day edition: it replaces the morning edition after
+round 1, with the whole of Tuesday reported, not just its first hours.
 
 Running this program copies that PNG, unchanged, into the output
 directory: ``$MAKEFUN_OUTPUT_DIR`` when the variable is set, otherwise
